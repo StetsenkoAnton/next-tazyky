@@ -4,8 +4,8 @@ import React from "react";
 import Webcam from "react-webcam";
 
 const videoConstraints = {
-  width: 640,
-  height: 480,
+  width: 320,
+  height: 240,
   facingMode: "user",
 };
 export default function UIAddPhoto({ label, notate }) {

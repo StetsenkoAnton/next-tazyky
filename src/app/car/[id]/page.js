@@ -42,7 +42,7 @@ export default function CarPage({params}) {
               pagination={true}
               modules={[Pagination]}
             >
-              {car.images.map(src => (
+              {car?.images?.map(src => (
                 <SwiperSlide key={src}>
                   <img src={src} alt="foto" />
                 </SwiperSlide>
