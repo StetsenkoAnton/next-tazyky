@@ -8,7 +8,7 @@ export default function UiCheckbox({ id, label, notate, value = "", onInput = (s
           type="checkbox"
           className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
           value={value}
-          onChange={(e) => onInput(e.target.value)}
+          onChange={(e) => onInput(e.target.checked)}
         />
       </div>
       <div className="text-sm leading-6">

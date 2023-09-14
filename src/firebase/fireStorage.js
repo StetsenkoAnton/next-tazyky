@@ -1,34 +1,33 @@
-import { getStorage, ref } from "firebase/storage";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import firebase_app from "./config";
 
-// Create a root reference
-const storage = getStorage();
-
-// Create a reference to 'mountains.jpg'
-const mountainsRef = ref(storage, 'mountains.jpg');
-
-// Create a reference to 'images/mountains.jpg'
-const mountainImagesRef = ref(storage, 'images/mountains.jpg');
-
-// While the file names are the same, the references point to different files
-mountainsRef.name === mountainImagesRef.name;           // true
-mountainsRef.fullPath === mountainImagesRef.fullPath;   // false
-getDownloadURL(ref(storage, 'images/stars.jpg'))
-  .then((url) => {
-    // `url` is the download URL for 'images/stars.jpg'
-
-    // This can be downloaded directly:
-    const xhr = new XMLHttpRequest();
-    xhr.responseType = 'blob';
-    xhr.onload = (event) => {
-      const blob = xhr.response;
-    };
-    xhr.open('GET', url);
-    xhr.send();
-
-    // Or inserted into an <img> element
-    const img = document.getElementById('myimg');
-    img.setAttribute('src', url);
+const storage = getStorage(firebase_app);
+export function uploadMedia(carId, fileName, file) {
+  const fileRef = ref(storage, `${carId}/${fileName}`);
+  const uploadTask = uploadBytesResumable(fileRef, file);
+  return new Promise((resolve, reject) => {
+    uploadTask.on('state_changed',
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log('Upload is ' + progress + '% done');
+        switch (snapshot.state) {
+          case 'paused':
+            console.log('Upload is paused');
+            break;
+          case 'running':
+            console.log('Upload is running');
+            break;
+        }
+      },
+      (error) => {
+        reject(error);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log('File available at', downloadURL);
+          resolve(downloadURL);
+        });
+      }
+    );
   })
-  .catch((error) => {
-    // Handle any errors
-  });
+}
