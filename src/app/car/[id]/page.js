@@ -67,19 +67,19 @@ export default function CarPage({params}) {
             <MediaList mediaPaths={[...car.imgBody, ...car.imgBodyInner]} />
             <p>Помилки по OBD2 {car.obd}.</p>
             <p>
-              Салон на {car.salonResult} з 5{car.innerSmell !== 'норм' ? `, має запах ${car.innerSmell}` : ''}.
+              Салон на {car.salonResult} з 5{car.innerSmell ?? car.innerSmell !== 'Норм' ? `, має запах ${car.innerSmell}` : ''}.
               {car.bodyInnerNotes && `${car.bodyInnerNotes}.`} Кондиціонер {car.climat}.
             </p>
           </UiInfoSection>
           <UiInfoSection title="Огляд знизу">
-            <p>Рама {car.chassis}. {car.bodyNotes}.</p>
+            <p>Рама {car.chassis}. {car.bodyNotes}</p>
             <MediaList mediaPaths={car.imgBodyStrong} />
 
             <p>
               Передній міст {car.fullFront}, задній міст {car.fullRear}, роздатка {car.fullCenter}, коробка {car.kpp}.
               Тормозні диски передні {car.breakFront} та задні {car.breakRear}.
             </p>
-            <p>{car.bodyTechnicNotes}.</p>
+            <p>{car.bodyTechnicNotes}</p>
             <MediaList mediaPaths={[...car.imgBodyGear, ...car.imgBodyShrus]} />
 
             <p>Рейка {car.gyr}, при поворотах руля {car.noiseGyr}.</p>
@@ -87,12 +87,12 @@ export default function CarPage({params}) {
           </UiInfoSection>
           <UiInfoSection title="Двигун">
             <p>
-              Двигун під час запуску {car.startTemp}, {car.noiseEngine}, {car.engineStartNotes}. Старт на гарячу в порівнянні з першим: {car.secondStart}. {car.engineStartNotes}.
+              Двигун під час запуску {car.startTemp}{car.noiseEngine && `, ${car.noiseEngine}`}{car.engineStartNotes && `, ${car.engineStartNotes}`}. Старт на гарячу в порівнянні з першим: {car.secondStart}. {car.engineHotNotes && `${car.engineHotNotes}.`}
             </p>
             <MediaList mediaPaths={[...car.imgFirstStart, ...car.imgSmokeEngine]} />
             <p>Емульсія на кришці заливної горловини {car.emulsion}, та {car.bubblesInCool} бульбашоки в розширювальному бачку на гарячу, привід ГРМ {car.grm}</p>
 
-            <p>Tурбіна {car.turbo}, {car.oilSmell} запах горілого масла при зупинці після покутушек </p>
+            <p>Tурбіна {car.turbo}, {car.oilSmell} запах горілого масла при зупинці після покатушек </p>
             <MediaList mediaPaths={car.imgTurbo} />
 
             <p>Паливна {car.fuelSystem}</p>
@@ -101,14 +101,14 @@ export default function CarPage({params}) {
             <p>Pадіатор {car.radiator}</p>
             <MediaList mediaPaths={car.imgRadiator} />
 
-            {car.guessEngine.length || car.imgGuessEngine.length && (
+            {car.guessEngine.length || !!car.imgGuessEngine.length && (
               <>
                 <p>Напевно тече з {car.guessEngine}</p>
                 <MediaList mediaPaths={car.imgGuessEngine} />
               </>
             )}
 
-            <p>{car.engineColdNotes}, {car.engineHotNotes}</p>
+            <p>{car.engineColdNotes}{car.engineHotNotes && `, ${car.engineHotNotes}`}.</p>
           </UiInfoSection>
           <UiInfoSection title="Тест драйв">
             <p>Зчеплення {car.clutch}, гальма {car.brake}, вібрациї на скорості: {car.vibrationSpeed}, динамика прискорення в підлогу 20 - 80км/ч: {car.acceleration}</p>
@@ -121,7 +121,7 @@ export default function CarPage({params}) {
             </p>
             <p>Кермо в нули стоїть {car.helmZero}, люфт {car.helmBacklash}, при повному вивороті шруси {car.helmTurn}, підвіска {car.suspension}</p>
             <p>Повний привід {car.fullDrive}, прискорення-&gt;гальмування мотором-&gt;прискорення - {car.fullDriveBacklash}</p>
-            {car.driveNotes.length && <p>Test-drive {car.driveNotes}</p>}
+            {!!car.driveNotes.length && <p>Test-drive {car.driveNotes}</p>}
           </UiInfoSection>
           <UiInfoSection title="Высновок">
             <MediaList mediaPaths={car.imgOther} />

@@ -23,7 +23,7 @@ export default function CreateSectionBodyInner({ car, updateCarKey, carId }) {
             label="Запах"
             value={car.innerSmell}
             onInput={(e) => updateCarKey("innerSmell", e)}
-            optionList={["норм", "вогкості", "цвілі"]}
+            optionList={["Hорм", "Вогкості", "Цвілі"]}
             key={1}
           />,
           <UiSelect
