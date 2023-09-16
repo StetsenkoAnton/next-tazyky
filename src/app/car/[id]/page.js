@@ -4,12 +4,10 @@ import { useEffect, useState } from "react";
 import { getDbData } from "@/firebase/db";
 import PageHeader from "@/components/PageHeader";
 import UiInfoSection from "@/components/UiInfoSection";
-
-import 'swiper/css';
-import 'swiper/css/pagination';
 import BtnShare from "@/components/BtnShare";
 import MediaList from "@/components/MediaList";
 import {CAR_EMPTY} from "@/constants";
+
 export default function CarPage({params}) {
   const [car, setCar] = useState(CAR_EMPTY);
   useEffect(() => {

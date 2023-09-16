@@ -90,7 +90,7 @@ export default function UiMedia({
         {value.map((fileName) => (
           <li key={fileName.path}>
             {fileName.type === "image"
-              ? <Image src={fileName.path} alt="img" width={80} height={60} quality={1}/>
+              ? <Image src={fileName.path} alt="img" width={80} height={60} quality={20}/>
               : <video src={fileName.path} width={80} height={60} />
             }
           </li>

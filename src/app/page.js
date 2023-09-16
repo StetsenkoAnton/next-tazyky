@@ -1,6 +1,5 @@
 "use client"
 import { useEffect, useState } from "react";
-import { useRouter } from 'next/navigation'
 import { getDbCollection } from "@/firebase/db";
 import PageHeader from "@/components/PageHeader";
 import ViewedCar from "@/components/ViewedCar";
@@ -8,7 +7,6 @@ import Link from "next/link";
 
 
 export default function Home() {
-  const router = useRouter();
   const [carList, setCarList] = useState([]);
   useEffect(() => {
     getDbCollection("cars")
