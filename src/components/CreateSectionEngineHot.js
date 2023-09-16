@@ -9,7 +9,13 @@ export default function CreateSectionEngineHot({ car, updateCarKey, carId }) {
   return (
     <UiInfoSection title="Двигун на гарячу">
       <UiInfoRow>
-        <UiMedia label="Відео диму з заливної горловини та щупу" carId={carId}  key={4}/>
+        <UiMedia
+          label="Відео диму з заливної горловини та щупу"
+          carId={carId}
+          value={car.imgSmokeEngine}
+          onInput={(e) => updateCarKey("imgSmokeEngine", e)}
+          noImage
+        />
       </UiInfoRow>
       <UiInfoRow3>
         {[
@@ -24,7 +30,7 @@ export default function CreateSectionEngineHot({ car, updateCarKey, carId }) {
             label="Бульбашки в розширювальному бачку"
             value={car.bubblesInCool}
             onInput={(e) => updateCarKey("bubblesInCool", e)}
-            optionList={["Не має", "Є", "Система не дозволяє перевірити"]}
+            optionList={["Відсутні", "Є", "Система не дозволяє перевірити"]}
             key={2}
           />,
           <UiSelect

@@ -1,41 +1,42 @@
 'use client'
+import { useState } from "react";
 
-import UiInfoRow from "@/components/UiInfoRow";
-import {uploadMedia} from "@/firebase/fireStorage";
-import {useState} from "react";
+import { uploadMedia } from "@/firebase/fireStorage";
+import Image from "next/image";
+import img from "@/assets/image.svg"
+import video from "@/assets/film.svg"
+import files from "@/assets/cloud-upload.svg"
+import UiLoader from "@/components/UiLoader";
 
 export default function UiMedia({
   label,
-  placeholder,
-  value = "",
-  onInput = (string) => {},
   notate = "",
+  value = [],
+  onInput = () => {},
   required = false,
   carId = "",
+  noVideo = false,
+  noImage = false,
 }) {
-  let mediaCounter = 0;
-  const [uploadedList, setUpload] = useState([]);
+  const [isLoad, setIsLoad] = useState(false);
   function handleLoad(e) {
-    console.log(e);
-    console.log(e.target.files);
+    const uploadList = [];
+    setIsLoad(true);
     for (let i = 0; i < e.target.files.length; i++) {
       const file = e.target.files[i];
-      const fileNamePath = `${file.name}`;
-      const [fileName, fileExt] = fileNamePath.split('.');
-      mediaCounter += 1;
-      uploadMedia(carId, `${label}-${mediaCounter}.${fileExt}`, file)
-        .then((fileName) => {
-          setUpload([...uploadedList, fileName])
-        })
-        .catch((err) => {
-          console.error(err);
-        })
+      uploadList.push(uploadMedia(carId, file.name, file));
     }
-    // e.target.files.forEach((file) => {
-    //
-    // })
-    // type, name, size
-
+    Promise.all(uploadList)
+      .then((pathArr) => {
+        // const metaList = pathArr.map((path) => getMetadata(forestRef))
+        onInput([...value, ...pathArr]);
+      })
+      // then(() => {
+      //
+      // })
+      .finally(() => {
+        setIsLoad(false);
+      })
   }
   return (
     <div className="block text-sm font-medium leading-6 text-gray-900">
@@ -43,47 +44,56 @@ export default function UiMedia({
         <h5 className="block text-sm font-medium leading-6 text-gray-900">{label}</h5>
         {notate && <p className="text-gray-500 text-sm">{notate}</p>}
       </div>}
-      <div className="relative mt-2 block w-full text-gray-900 sm:text-sm sm:leading-6">
-        <label className="rounded-md shadow-sm py-1.5 px-2 border-0 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600">
-          Зробити фото
-          <input
-            required={required}
-            type="file"
-            capture="camera"
-            accept="image/*"
-            onChange={handleLoad}
-            placeholder={placeholder}
-            // className="invisible"
-          />
-        </label>
-        <label className="rounded-md shadow-sm py-1.5 px-2 border-0 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600">
-          Зробити відео
-          <input
-            required={required}
-            type="file"
-            capture="camera"
-            accept="video/*"
-            onChange={handleLoad}
-            placeholder={placeholder}
-            // className="invisible"
-          />
-        </label>
-        <label className="rounded-md shadow-sm py-1.5 px-2 border-0 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600">
-          Завантажити фото
-          <input
-            required={required}
-            type="file"
-            accept="image/*,video/*"
-            multiple
-            onChange={handleLoad}
-            placeholder={placeholder}
-            // className="invisible"
-          />
-        </label>
-      </div>
-      <ul>
-        {uploadedList.map((fileName) => (
-          <li key={fileName}>{fileName}</li>
+      {isLoad
+        ? <div className="relative mt-2 flex justify-center w-full text-gray-900 sm:text-sm sm:leading-6"><UiLoader /></div>
+        : (
+          <div className="relative mt-2 flex gap-2 w-full text-gray-900 sm:text-sm sm:leading-6">
+            {!noImage && <label className="flex-1 flex gap-2 justify-center items-center rounded-md shadow-sm py-1.5 px-2 border-0 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600">
+              <Image src={img} alt="img" width={40} height={40} />
+              Фото
+              <input
+                required={required}
+                type="file"
+                capture="camera"
+                accept="image/*"
+                onChange={handleLoad}
+                className="hidden"
+              />
+            </label>}
+            {!noVideo && <label className="flex-1 flex gap-2 justify-center items-center rounded-md shadow-sm py-1.5 px-2 border-0 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600">
+              <Image src={video} alt="img" width={40} height={40} />
+              Відео
+              <input
+                required={required}
+                type="file"
+                capture="camera"
+                accept="video/*"
+                onChange={handleLoad}
+                className="hidden"
+              />
+            </label>}
+            <label className="flex-1 flex gap-2 justify-center items-center rounded-md shadow-sm py-1.5 px-2 border-0 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600">
+              <Image src={files} alt="img" width={40} height={40} />
+              Завантажити
+              <input
+                required={required}
+                type="file"
+                accept="image/*,video/*"
+                multiple
+                onChange={handleLoad}
+                className="hidden"
+              />
+            </label>
+          </div>
+        )}
+      <ul className="flex gap-2 pt-2">
+        {value.map((fileName) => (
+          <li key={fileName.path}>
+            {fileName.type === "image"
+              ? <Image src={fileName.path} alt="img" width={80} height={60} quality={1}/>
+              : <video src={fileName.path} width={80} height={60} />
+            }
+          </li>
         ))}
       </ul>
     </div>

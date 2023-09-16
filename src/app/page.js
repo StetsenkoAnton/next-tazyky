@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation'
 import { getDbCollection } from "@/firebase/db";
 import PageHeader from "@/components/PageHeader";
-import UiInput from "@/components/UiInput";
 import ViewedCar from "@/components/ViewedCar";
+import Link from "next/link";
 
 
 export default function Home() {
@@ -23,7 +23,7 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       <PageHeader>
-        <UiInput placeholder="Пошук" />
+        <Link className="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" href="/create">Почати огляд</Link>
       </PageHeader>
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <h2 className="text-2xl font-bold tracking-tight text-gray-900">Оглянуті автівки</h2>

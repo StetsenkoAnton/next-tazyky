@@ -10,29 +10,34 @@ export default function CreateSectionBodyInner({ car, updateCarKey, carId }) {
   return (
     <UiInfoSection title="Огляд салону">
       <UiInfoRow>
-        <UiMedia label="Фото салону" carId={carId} />
+        <UiMedia
+          label="Фото салону"
+          carId={carId}
+          value={car.imgBodyInner}
+          onInput={(e) => updateCarKey("imgBodyInner", e)}
+        />
       </UiInfoRow>
       <UiInfoRow4>
         {[
           <UiSelect
             label="Запах"
             value={car.innerSmell}
-            onInput={(e) => updateCarKey("smell", e)}
-            optionList={["Все ок", "Вогкості", "Цвілі"]}
+            onInput={(e) => updateCarKey("innerSmell", e)}
+            optionList={["норм", "вогкості", "цвілі"]}
             key={1}
           />,
           <UiSelect
             label="Кондиціонер"
             value={car.climat}
             onInput={(e) => updateCarKey("climat", e)}
-            optionList={["Працює", "Не працює бо хз", "Треба заправить"]}
+            optionList={["працює", "не працює бо хз", "треба заправить", "Не має"]}
             key={2}
           />,
           <UiSelect
             label="Фари / повороти"
             value={car.light}
             onInput={(e) => updateCarKey("light", e)}
-            optionList={["Все працює", "Треба лампа"]}
+            optionList={["Все працює", "треба замінити"]}
             key={3}
           />,
           <UiSelect
@@ -47,13 +52,13 @@ export default function CreateSectionBodyInner({ car, updateCarKey, carId }) {
       <UiInfoRow12>
         {[
           <UiSelect
-            label="Читання помилок OBD2 "
+            label="Читання помилок OBD2"
             value={car.obd}
             onInput={(e) => updateCarKey("obd", e)}
-            optionList={["Не читали", "Чисто", "Є помілки", "Не вдалось прочитати"]}
+            optionList={["не читали", "не має", "є", "не вдалось прочитати"]}
             key={5}
           />,
-          (car.obd === "Є помілки" && <UiMedia label="Скрін помилок" carId={carId} key={6} />),
+          (car.obd === "є" && <UiMedia label="Скрін помилок" carId={carId} key={6} />),
         ]}
       </UiInfoRow12>
       <UiInfoRow>

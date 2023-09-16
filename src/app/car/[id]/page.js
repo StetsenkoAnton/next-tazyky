@@ -1,41 +1,40 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination } from 'swiper/modules';
 import { getDbData } from "@/firebase/db";
 import PageHeader from "@/components/PageHeader";
+import UiInfoSection from "@/components/UiInfoSection";
 
 import 'swiper/css';
 import 'swiper/css/pagination';
+import BtnShare from "@/components/BtnShare";
+import MediaList from "@/components/MediaList";
+import {CAR_EMPTY} from "@/constants";
 export default function CarPage({params}) {
-  const [car, setCar] = useState(null);
+  const [car, setCar] = useState(CAR_EMPTY);
   useEffect(() => {
     getDbData("cars", params.id)
       .then((car) => {
-        console.log(car);
-        setCar(car);
+        setCar({...CAR_EMPTY, ...car});
       })
       .catch((error) => {
         console.error(error);
       })
   }, [])
-  function handleShare() {
-    if (navigator.share) {
-      navigator.share({
-        title: `Звіт ${car.name}`,
-        text: "Learn web development on MDN!",
-        url: window.location.href,
-      })
-    } else alert("no share")
-  }
 
-  return (
+  if (!car) return (
     <main className="min-h-screen">
       <PageHeader/>
+    </main>
+  )
+  return (
+    <main className="min-h-screen">
+      <PageHeader>
+        <BtnShare title={`Звіт ${car.name}`} />
+      </PageHeader>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="lg:flex lg:items-center lg:justify-between mb-3">
-          <div className="min-w-0 flex-1">
+          {car && (<div className="min-w-0 flex-1">
             <h2
               className="text-2xl font-bold leading-7 capitalize text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight"
             >
@@ -60,50 +59,80 @@ export default function CarPage({params}) {
                         d="M5.75 2a.75.75 0 01.75.75V4h7V2.75a.75.75 0 011.5 0V4h.25A2.75 2.75 0 0118 6.75v8.5A2.75 2.75 0 0115.25 18H4.75A2.75 2.75 0 012 15.25v-8.5A2.75 2.75 0 014.75 4H5V2.75A.75.75 0 015.75 2zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75z"
                         clipRule="evenodd"/>
                 </svg>
-                {new Date(car.id).toLocaleString('ua-UA', { timeZone: 'UTC' })}
+                {new Date(car.id).toLocaleString('uk-UA', { timeZone: 'UTC' })}
               </div>
             </div>
-          </div>
-          <div className="mt-5 flex lg:ml-4 lg:mt-0">
-              <span className="sm:ml-3">
-                <button
-                  type="button"
-                  className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  onClick={handleShare}
-                >
-                  <svg className="-ml-0.5 mr-1.5 h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fillRule="evenodd"
-                          d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                          clipRule="evenodd"/>
-                  </svg>
-                  Поділитися
-                </button>
-              </span>
-          </div>
+          </div>)}
         </div>
-      </div>
-      {car && (
-        <div>
+        {car && (
           <div>
-            {car?.images?.map(src => (
-              <img className="w-full" src={src} alt="foto" key={src} />
-            ))}
-          </div>
+            <UiInfoSection title="Огляд зовні">
+              <MediaList mediaPaths={[...car.imgBody, ...car.imgBodyInner]} />
+              <p>Помилки по OBD2 {car.obd}.</p>
+              <p>
+                Салон на {car.salonResult} з 5{car.innerSmell !== 'норм' ? `, має запах ${car.innerSmell}` : ''}.
+                {car.bodyInnerNotes && `${car.bodyInnerNotes}.`} Кондиціонер {car.climat}.
+              </p>
+            </UiInfoSection>
+            <UiInfoSection title="Огляд знизу">
+              <p>Рама {car.chassis}. {car.bodyNotes}.</p>
+              <MediaList mediaPaths={car.imgBodyStrong} />
 
-        <div className="px-0 sm:px-6">
-          <div className="mt-6 border-t border-gray-100">
-            <dl className="divide-y divide-gray-100">
-              {[].map((section, index) => (
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0" key={index}>
-                  <dt className="text-sm font-medium leading-6 text-gray-900">{section.title}</dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">Margot Foster</dd>
-                </div>
-              ))}
-            </dl>
+              <p>
+                Передній міст {car.fullFront}, задній міст {car.fullRear}, роздатка {car.fullCenter}, коробка {car.kpp}.
+                Тормозні диски передні {car.breakFront} та задні {car.breakRear}.
+              </p>
+              <p>{car.bodyTechnicNotes}.</p>
+              <MediaList mediaPaths={[...car.imgBodyGear, ...car.imgBodyShrus]} />
+
+              <p>Рейка {car.gyr}, при поворотах руля {car.noiseGyr}.</p>
+              <MediaList mediaPaths={car.imgBodyGyr} />
+            </UiInfoSection>
+            <UiInfoSection title="Двигун">
+              <p>
+                Двигун під час запуску {car.startTemp}, {car.noiseEngine}, {car.engineStartNotes}. Старт на гарячу в порівнянні з першим: {car.secondStart}. {car.engineStartNotes}.
+              </p>
+              <MediaList mediaPaths={[...car.imgFirstStart, ...car.imgSmokeEngine]} />
+              <p>Емульсія на кришці заливної горловини {car.emulsion}, та {car.bubblesInCool} бульбашоки в розширювальному бачку на гарячу, привід ГРМ {car.grm}</p>
+
+              <p>Tурбіна {car.turbo}, {car.oilSmell} запах горілого масла при зупинці після покутушек </p>
+              <MediaList mediaPaths={car.imgTurbo} />
+
+              <p>Паливна {car.fuelSystem}</p>
+              <MediaList mediaPaths={car.imgFuelSystem} />
+
+              <p>Pадіатор {car.radiator}</p>
+              <MediaList mediaPaths={car.imgRadiator} />
+
+              {car.guessEngine.length || car.imgGuessEngine.length && (
+                <>
+                  <p>Напевно тече з {car.guessEngine}</p>
+                  <MediaList mediaPaths={car.imgGuessEngine} />
+                </>
+              )}
+
+              <p>{car.engineColdNotes}, {car.engineHotNotes}</p>
+            </UiInfoSection>
+            <UiInfoSection title="Тест драйв">
+              <p>Зчеплення {car.clutch}, гальма {car.brake}, вібрациї на скорості: {car.vibrationSpeed}, динамика прискорення в підлогу 20 - 80км/ч: {car.acceleration}</p>
+              <p>
+                Коробка {car.isMkppError
+                ? (
+                  <span>{car.isErrorMkppSelector && "має роздовбану кулісу, "}{car.isErrorMkppSynkro && "погано включаються передачі, "}{car.isErrorMkppKnocksOut && "вибиває, "}{car.isErrorMkppVibration && "має вібрацію"}.</span>
+                )
+                : 'без зауважень'}
+              </p>
+              <p>Кермо в нули стоїть {car.helmZero}, люфт {car.helmBacklash}, при повному вивороті шруси {car.helmTurn}, підвіска {car.suspension}</p>
+              <p>Повний привід {car.fullDrive}, прискорення-&gt;гальмування мотором-&gt;прискорення - {car.fullDriveBacklash}</p>
+              {car.driveNotes.length && <p>Test-drive {car.driveNotes}</p>}
+            </UiInfoSection>
+            <UiInfoSection title="Высновок">
+              <MediaList mediaPaths={car.imgOther} />
+              <p>{car.otherNotes}</p>
+            </UiInfoSection>
           </div>
-        </div>
-      </div>
         )}
+      </div>
     </main>
   )
 }

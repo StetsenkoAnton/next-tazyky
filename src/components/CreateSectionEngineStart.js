@@ -9,7 +9,13 @@ export default function CreateSectionEngineStart({ car, updateCarKey, carId }) {
   return (
     <UiInfoSection title="Перший запуску двигуна, бажано на холодну">
       <UiInfoRow>
-        <UiMedia label="Відео запуску" carId={carId} />
+        <UiMedia
+          label="Відео запуску"
+          carId={carId}
+          value={car.imgFirstStart}
+          onInput={(e) => updateCarKey("imgFirstStart", e)}
+          noImage
+        />
       </UiInfoRow>
       <UiInfoRow3>
         {[

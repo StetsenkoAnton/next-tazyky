@@ -24,8 +24,14 @@ export function uploadMedia(carId, fileName, file) {
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log('File available at', downloadURL);
-          resolve(downloadURL);
+          const typeRaw = uploadTask.snapshot.metadata.contentType;
+          const typeSplit = uploadTask.snapshot.metadata.contentType.split('/')[0];
+          const type = typeSplit === 'image' ? 'image' : typeRaw;
+          console.log(type);
+          resolve({
+            path: downloadURL,
+            type,
+          });
         });
       }
     );

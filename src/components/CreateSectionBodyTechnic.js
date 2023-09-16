@@ -11,7 +11,12 @@ export default function CreateSectionBodyTechnic({ car, updateCarKey, carId }) {
   return (
     <UiInfoSection title="Зовнішній огляд, техніка">
       <UiInfoRow>
-        <UiMedia label="Фото мости, хрестовини, роздатка та коробка" carId={carId} />
+        <UiMedia
+          label="Фото мости, хрестовини, роздатка та коробка"
+          carId={carId}
+          value={car.imgBodyGear}
+          onInput={(e) => updateCarKey("imgBodyGear", e)}
+        />
       </UiInfoRow>
       <UiInfoRow4>
         {[
@@ -19,14 +24,14 @@ export default function CreateSectionBodyTechnic({ car, updateCarKey, carId }) {
             label="Передній міст"
             value={car.fullFront}
             onInput={(e) => updateCarKey("fullFront", e)}
-            optionList={["Сухий", "Спітнілий", "Тече"]}
+            optionList={["сухий", "спітнілий", "тече"]}
             key={1}
           />),
           (car.gear === "Повний" && <UiSelect
             label="Роздатка"
             value={car.fullCenter}
             onInput={(e) => updateCarKey("fullCenter", e)}
-            optionList={["Суха", "Спітніла", "Тече"]}
+            optionList={["суха", "спітніла", "тече"]}
             key={2}
           />),
           (car.gear !== "Передній" && <UiSelect
@@ -40,17 +45,28 @@ export default function CreateSectionBodyTechnic({ car, updateCarKey, carId }) {
             label="Коробка"
             value={car.kpp}
             onInput={(e) => updateCarKey("kpp", e)}
-            optionList={["Сухий", "Спітнілий", "Тече"]}
+            optionList={["суха", "спітніла", "тече"]}
             key={3}
           />,
         ]}
       </UiInfoRow4>
       <UiInfoRow>
-        <UiMedia label="Фото шруси та пильники" carId={carId} />
+        <UiMedia
+          label="Фото шруси та пильники"
+          carId={carId}
+          value={car.imgBodyShrus}
+          onInput={(e) => updateCarKey("imgBodyShrus", e)}
+        />
       </UiInfoRow>
       <UiInfoRow21>
         {[
-          <UiMedia label="Фото рейки ГУР" carId={carId}  key={4}/>,
+          <UiMedia
+            label="Фото рейки ГУР"
+            carId={carId}
+            value={car.imgBodyGyr}
+            onInput={(e) => updateCarKey("imgBodyGyr", e)}
+            key={4}
+          />,
           <UiSelect
             label="Рейка"
             value={car.gyr}
@@ -66,14 +82,14 @@ export default function CreateSectionBodyTechnic({ car, updateCarKey, carId }) {
             label="Стан передніх дисків"
             value={car.breakFront}
             onInput={(e) => updateCarKey("breakFront", e)}
-            optionList={["Норма", "Під заміну", "Барабанні"]}
+            optionList={["В нормі", "Під заміну", "Барабанні"]}
             key={5}
           />,
           <UiSelect
             label="Стан задніх дисків"
             value={car.breakRear}
             onInput={(e) => updateCarKey("breakRear", e)}
-            optionList={["Норма", "Під заміну", "Барабанні"]}
+            optionList={["В нормі", "Під заміну", "Барабанні"]}
             key={6}
           />,
         ]}

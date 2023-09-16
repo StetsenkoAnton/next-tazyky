@@ -8,18 +8,18 @@ import UiInfoRow from "@/components/UiInfoRow";
 
 export default function CreateSectionEngineCold({ car, updateCarKey, carId }) {
   return (
-    <UiInfoSection title="Двигун на холодну">
+    <UiInfoSection title="Огляд двигуна">
       <UiInfoRow3>
         {[
           <UiSelect
-            label="Емульсія на кришці мастила"
+            label="Емульсія на кришці заливної горловини"
             value={car.emulsion}
             onInput={(e) => updateCarKey("emulsion", e)}
-            optionList={["Ні", "Є"]}
+            optionList={["Відсутня", "Є"]}
             key={1}
           />,
           <UiSelect
-            label="Охолоджуюча рідина"
+            label="Охолоджуюча рідина в бачку"
             value={car.coolantFluid}
             onInput={(e) => updateCarKey("coolantFluid", e)}
             optionList={["Антифриз", "Вода", "Є плями на поверхні"]}
@@ -36,7 +36,13 @@ export default function CreateSectionEngineCold({ car, updateCarKey, carId }) {
       </UiInfoRow3>
       <UiInfoRow21>
         {[
-          <UiMedia label="Фото турбіни" carId={carId}  key={4}/>,
+          <UiMedia
+            label="Фото турбіни"
+            carId={carId}
+            value={car.imgTurbo}
+            onInput={(e) => updateCarKey("imgTurbo", e)}
+            key={4}
+          />,
           <UiSelect
             label="Турбіна та патрубки до интеркуллера"
             value={car.turbo}
@@ -48,7 +54,13 @@ export default function CreateSectionEngineCold({ car, updateCarKey, carId }) {
       </UiInfoRow21>
       <UiInfoRow21>
         {[
-          <UiMedia label="Фото форсунок" carId={carId}  key={4}/>,
+          <UiMedia
+            label="Фото форсунок"
+            carId={carId}
+            value={car.imgFuelSystem}
+            onInput={(e) => updateCarKey("imgFuelSystem", e)}
+            key={4}
+          />,
           <UiSelect
             label="Паливна"
             value={car.fuelSystem}
@@ -60,7 +72,13 @@ export default function CreateSectionEngineCold({ car, updateCarKey, carId }) {
       </UiInfoRow21>
       <UiInfoRow21>
         {[
-          <UiMedia label="Фото де тече двигун" carId={carId}  key={4}/>,
+          <UiMedia
+            label="Фото де тече двигун"
+            carId={carId}
+            value={car.imgGuessEngine}
+            onInput={(e) => updateCarKey("imgGuessEngine", e)}
+            key={4}
+          />,
           <UiTextArea
             label="Припущення звідки тече"
             value={car.guessEngine}
@@ -71,7 +89,13 @@ export default function CreateSectionEngineCold({ car, updateCarKey, carId }) {
       </UiInfoRow21>
       <UiInfoRow21>
         {[
-          <UiMedia label="Фото головного радіатора" carId={carId}  key={7}/>,
+          <UiMedia
+            label="Фото головного радіатора"
+            carId={carId}
+            value={car.imgRadiator}
+            onInput={(e) => updateCarKey("imgRadiator", e)}
+            key={7}
+          />,
           <UiSelect
             label="Радіатор"
             value={car.radiator}

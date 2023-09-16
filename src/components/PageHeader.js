@@ -7,12 +7,12 @@ export default function PageHeader({ children }) {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
           <div className="inset-y-0 left-0 flex items-center">
-            <Link className="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" href="/create">Create</Link>
+
           </div>
-          <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-            <div className="flex flex-shrink-0 items-center">
+          <div className="flex items-center justify-center sm:items-stretch sm:justify-start">
+            <div className="flex flex-shrink-0 items-center text-white">
               <Link href="/">
-                <img className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" width={50} height={50} alt="Your Company" />
+                <strong>ТАЗИКИ</strong>
               </Link>
             </div>
           </div>

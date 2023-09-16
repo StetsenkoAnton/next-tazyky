@@ -29,14 +29,14 @@ export default function CreateSectionDrive({ car, updateCarKey, carId }) {
             label="Гальма"
             value={car.brake}
             onInput={(e) => updateCarKey("brake", e)}
-            optionList={["Гарно", "Гарно але є вібрація", "Гарно але уводить", "Слабо", "Повітря в системі"]}
+            optionList={["Гарні", "Гарні але є вібрація", "Гарні але уводить", "Слабі", "Мають повітря в системі"]}
             key={3}
           />,
           <UiSelect
             label="Вібрация на скорості"
             value={car.vibrationSpeed}
             onInput={(e) => updateCarKey("vibrationSpeed", e)}
-            optionList={["Не має", "80-120", "Не їздили на трассі"]}
+            optionList={["Відсутня", "Є 80-120", "Не їздили на трассі"]}
             key={4}
           />,
         ]}
@@ -55,7 +55,7 @@ export default function CreateSectionDrive({ car, updateCarKey, carId }) {
             label="Роздовбана куліса"
             id={6}
             value={car.isErrorMkppSelector}
-            onInput={(e) => updateCarKey("errorMkppSelector", e)}
+            onInput={(e) => updateCarKey("isErrorMkppSelector", e)}
             key={6}
           />,
           <UiCheckbox
@@ -87,22 +87,22 @@ export default function CreateSectionDrive({ car, updateCarKey, carId }) {
             label="0 Керма"
             value={car.helmZero}
             onInput={(e) => updateCarKey("helmZero", e)}
-            optionList={["Рівно", "Є відхилення", "Криво"]}
+            optionList={["Рівно", "Трохи відхилено", "Криво"]}
             key={10}
-          />,
-          <UiSelect
-            label="Розворот при повному вивороті"
-            value={car.helmTurn}
-            onInput={(e) => updateCarKey("helmTurn", e)}
-            optionList={["Тихо", "Є хруст"]}
-            key={11}
           />,
           <UiSelect
             label="Люфт керма"
             value={car.helmBacklash}
             onInput={(e) => updateCarKey("helmBacklash", e)}
-            optionList={["Не має", "Не виликий", "Сильній"]}
+            optionList={["Відсутній", "Не виликий", "Сильній"]}
             key={12}
+          />,
+          <UiSelect
+            label="Розворот при повному вивороті шруси"
+            value={car.helmTurn}
+            onInput={(e) => updateCarKey("helmTurn", e)}
+            optionList={["Не хрустять", "Хрустять"]}
+            key={11}
           />,
         ]}
       </UiInfoRow3>
@@ -126,20 +126,20 @@ export default function CreateSectionDrive({ car, updateCarKey, carId }) {
             label="Підвіска"
             value={car.suspension}
             onInput={(e) => updateCarKey("suspension", e)}
-            optionList={["Тихо, м'яко", "Є стуки", "Б'є в кузов"]}
+            optionList={["Тиха, м'яка", "Має стуки", "Б'є в кузов"]}
             key={15}
           />,
           <UiSelect
             label="Запах горілого масла при зупинці"
             value={car.oilSmell}
             onInput={(e) => updateCarKey("oilSmell", e)}
-            optionList={["Не має", "Ледве чутно", "Газова камера"]}
+            optionList={["Не відчувається", "Ледве чутно", "Сильний"]}
             key={16}
           />,
         ]}
       </UiInfoRow4>
       <UiInfoRow>
-        <UiTextArea label="Примітки" value={car.driveNotes} onInput={(e) => updateCarKey("driveNotes", e)}/>
+        <UiTextArea label="Примітки Test-drive" value={car.driveNotes} onInput={(e) => updateCarKey("driveNotes", e)}/>
       </UiInfoRow>
     </UiInfoSection>
   )
