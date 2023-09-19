@@ -8,23 +8,23 @@ import BtnShare from "@/components/BtnShare";
 import MediaList from "@/components/MediaList";
 import {CAR_EMPTY} from "@/constants";
 
-export default function CarPage({params}) {
+export default function CarPage({ params }) {
   const [car, setCar] = useState(CAR_EMPTY);
-  useEffect(() => {
-    getDbData("cars", params.id)
-      .then((car) => {
-        setCar({...CAR_EMPTY, ...car});
-      })
-      .catch((error) => {
-        console.error(error);
-      })
-  }, [])
+  // useEffect(() => {
+  //   getDbData("cars", params.id)
+  //     .then((car) => {
+  //       setCar({...CAR_EMPTY, ...car});
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     })
+  // }, [])
 
-  if (!car) return (
-    <main className="min-h-screen">
-      <PageHeader/>
-    </main>
-  )
+  // if (!car) return (
+  //   <main className="min-h-screen">
+  //     <PageHeader/>
+  //   </main>
+  // )
   return (
     <main className="min-h-screen">
       <PageHeader>

@@ -19,9 +19,9 @@ import CreateSectionOther from "@/components/CreateSectionOther";
 import BtnShare from "@/components/BtnShare";
 
 
-export default function CreatePage() {
+export default function CreatePage({ params }) {
   const router = useRouter();
-  const params = useParams();
+  // const params = useParams();
   const carId = params.id;
   const [car, setCar] = useState(CAR_EMPTY);
 
