@@ -28,12 +28,8 @@ export default function UiMedia({
     }
     Promise.all(uploadList)
       .then((pathArr) => {
-        // const metaList = pathArr.map((path) => getMetadata(forestRef))
         onInput([...value, ...pathArr]);
       })
-      // then(() => {
-      //
-      // })
       .finally(() => {
         setIsLoad(false);
       })
@@ -74,11 +70,11 @@ export default function UiMedia({
             </label>}
             <label className="flex-1 flex gap-2 justify-center items-center rounded-md shadow-sm py-1.5 px-2 border-0 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600">
               <Image src={files} alt="img" width={40} height={40} />
-              Завантажити
+              Upload
               <input
                 required={required}
                 type="file"
-                accept="image/*,video/*"
+                accept={`${noImage ? 'video/*' : 'image/*,video/*'}`}
                 multiple
                 onChange={handleLoad}
                 className="hidden"

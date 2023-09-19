@@ -42,11 +42,22 @@ export default function CreatePage() {
     updateRtDbData(carId, cloneCar).then();
   }
 
+  function deleteRTData() {
+    updateRtDbData(carId, null).then();
+  }
+  function onClose(e) {
+    e.preventDefault();
+    if (window.confirm("Насправді видалити?")) {
+      router.push("/");
+      deleteRTData();
+    }
+  }
   function onSubmit(e) {
     e.preventDefault();
     const uiCar = getUiCarData(car);
     setDbData("cars", carId, uiCar).then(() => {
-      router.push(`/car/${carId}`)
+      router.push(`/car/${carId}`);
+      deleteRTData();
     });
   }
   return (
@@ -66,11 +77,17 @@ export default function CreatePage() {
           <CreateSectionEngineHot car={car} carId={carId} updateCarKey={updateCarKey} />
           <CreateSectionOther car={car} carId={carId} updateCarKey={updateCarKey} />
           <div className="mt-6 flex items-center justify-end gap-x-6">
-            <button type="button" className="text-sm font-semibold leading-6 text-gray-900">Видалити</button>
+            <button
+              type="button"
+              className="text-sm font-semibold leading-6 text-gray-900"
+              onClick={onClose}
+            >
+              Видалити
+            </button>
             <button
               type="submit"
               className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              onClick={onSubmit}
+              onClick={ onSubmit }
             >
               Зберегти та перейти до огляду
             </button>
