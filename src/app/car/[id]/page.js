@@ -10,21 +10,15 @@ import {CAR_EMPTY} from "@/constants";
 
 export default function CarPage({ params }) {
   const [car, setCar] = useState(CAR_EMPTY);
-  // useEffect(() => {
-  //   getDbData("cars", params.id)
-  //     .then((car) => {
-  //       setCar({...CAR_EMPTY, ...car});
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     })
-  // }, [])
-
-  // if (!car) return (
-  //   <main className="min-h-screen">
-  //     <PageHeader/>
-  //   </main>
-  // )
+  useEffect(() => {
+    getDbData("cars", params.id)
+      .then((car) => {
+        setCar({...CAR_EMPTY, ...car});
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+  }, [])
   return (
     <main className="min-h-screen">
       <PageHeader>
@@ -87,7 +81,7 @@ export default function CarPage({ params }) {
           </UiInfoSection>
           <UiInfoSection title="Двигун">
             <p>
-              Двигун під час запуску {car.startTemp}{car.noiseEngine && `, ${car.noiseEngine}`}{car.engineStartNotes && `, ${car.engineStartNotes}`}. Старт на гарячу в порівнянні з першим: {car.secondStart}. {car.engineHotNotes && `${car.engineHotNotes}.`}
+              Двигун під час запуску {car.startTemp} {car.noiseEngine && `, ${car.noiseEngine}`} {car.engineStartNotes && `, ${car.engineStartNotes}`}. Старт на гарячу в порівнянні з першим: {car.secondStart}. {car.engineHotNotes && `${car.engineHotNotes}.`}
             </p>
             <MediaList mediaPaths={[...car.imgFirstStart, ...car.imgSmokeEngine]} />
             <p>Емульсія на кришці заливної горловини {car.emulsion}, та {car.bubblesInCool} бульбашоки в розширювальному бачку на гарячу, привід ГРМ {car.grm}</p>
@@ -108,17 +102,28 @@ export default function CarPage({ params }) {
               </>
             )}
 
-            <p>{car.engineColdNotes}{car.engineHotNotes && `, ${car.engineHotNotes}`}.</p>
+            <p>{car.engineColdNotes} {car.engineHotNotes && `, ${car.engineHotNotes}`}</p>
           </UiInfoSection>
           <UiInfoSection title="Тест драйв">
             <p>Зчеплення {car.clutch}, гальма {car.brake}, вібрациї на скорості: {car.vibrationSpeed}, динамика прискорення в підлогу 20 - 80км/ч: {car.acceleration}</p>
-            <p>
-              Коробка {car.isMkppError
-              ? (
-                <span>{car.isErrorMkppSelector && "має роздовбану кулісу, "}{car.isErrorMkppSynkro && "погано включаються передачі, "}{car.isErrorMkppKnocksOut && "вибиває, "}{car.isErrorMkppVibration && "має вібрацію"}.</span>
-              )
-              : 'без зауважень'}
-            </p>
+            {car.transmission.toLowerCase() === "механіка" && (
+              <p>
+                Коробка {car.isMkppError
+                ? (
+                  <span>{car.isErrorMkppSelector && "має роздовбану кулісу, "}{car.isErrorMkppSynkro && "погано включаються передачі, "}{car.isErrorMkppKnocksOut && "вибиває, "}{car.isErrorMkppVibration && "має вібрацію"}.</span>
+                )
+                : 'без зауважень.'}
+              </p>
+            )}
+            {car.transmission.toLowerCase() === "автомат" && (
+              <p>
+                Коробка {car.isAkppError
+                ? (
+                  <span>{car.isErrorAkppSelector && "має поштовхи при перемиканні селектору, "}{car.isErrorAkppSynkro && "має поштовхи при зміні передач, "}{car.isErrorAkppVibration && "має вібрацію в D"}.</span>
+                )
+                : 'без зауважень'}
+              </p>
+            )}
             <p>Кермо в нули стоїть {car.helmZero}, люфт {car.helmBacklash}, при повному вивороті шруси {car.helmTurn}, підвіска {car.suspension}</p>
             <p>Повний привід {car.fullDrive}, прискорення-&gt;гальмування мотором-&gt;прискорення - {car.fullDriveBacklash}</p>
             {!!car.driveNotes.length && <p>Test-drive {car.driveNotes}</p>}

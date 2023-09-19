@@ -7,13 +7,13 @@ export default function MediaList({
   mediaPaths = [],
 }) {
   return (
-    <ul className="mb-4">
+    <ul className="my-4">
       {mediaPaths.map((fileName) => (
         <li key={fileName.path}>
           {fileName.type === "image"
-            ? <img className="w-full" src={fileName.path} alt="img" />
+            ? <img className="w-full mb-1" src={fileName.path} alt="img" />
             : (
-              <video className="w-full" src={fileName.path} controls>
+              <video className="w-full mb-1" src={fileName.path} controls>
                 <source src={fileName.path} type={fileName.type} />
               </video>)
           }
