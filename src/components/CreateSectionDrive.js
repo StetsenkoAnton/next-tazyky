@@ -81,6 +81,39 @@ export default function CreateSectionDrive({ car, updateCarKey, carId }) {
           />,
         ]}
       </UiInfoRow4>}
+      {car.transmission === "Автомат" && <UiInfoRow>
+        <UiCheckbox
+          id={5}
+          value={car.isAkppError}
+          onInput={(e) => updateCarKey("isAkppError", e)}
+          label="AКПП має питання"
+        />
+      </UiInfoRow>}
+      {car.isAkppError && <UiInfoRow3>
+        {[
+          <UiCheckbox
+            label="Поштовхи при перемиканні селектору"
+            id={26}
+            value={car.isErrorAkppSelector}
+            onInput={(e) => updateCarKey("isErrorAkppSelector", e)}
+            key={26}
+          />,
+          <UiCheckbox
+            label="Поштовхи при зміні передач"
+            id={27}
+            value={car.isErrorAkppSynkro}
+            onInput={(e) => updateCarKey("isErrorAkppSynkro", e)}
+            key={27}
+          />,
+          <UiCheckbox
+            label="Вібрації на D (пропадає при P, N)"
+            id={29}
+            value={car.isErrorAkppVibration}
+            onInput={(e) => updateCarKey("isErrorAkppVibration", e)}
+            key={29}
+          />,
+        ]}
+      </UiInfoRow3>}
       <UiInfoRow3>
         {[
           <UiSelect
