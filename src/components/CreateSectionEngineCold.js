@@ -29,7 +29,7 @@ export default function CreateSectionEngineCold({ car, updateCarKey, carId }) {
             label="Привід ГРМ"
             value={car.grm}
             onInput={(e) => updateCarKey("grm", e)}
-            optionList={["Новій", "Час міняти", "Невідомо коли міняли"]}
+            optionList={["Новий", "Час міняти", "Невідомо коли міняли"]}
             key={3}
           />,
         ]}

@@ -11,7 +11,7 @@ export default function MediaList({
       {mediaPaths.map((fileName) => (
         <li key={fileName.path}>
           {fileName.type === "image"
-            ? <img className="w-full mb-1" src={fileName.path} alt="img" />
+            ? <img className="w-full mb-1" src={fileName.path} alt="img" loading="lazy"/>
             : (
               <video className="w-full mb-1" src={fileName.path} controls>
                 <source src={fileName.path} type={fileName.type} />

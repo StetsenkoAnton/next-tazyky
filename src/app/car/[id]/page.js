@@ -7,6 +7,7 @@ import UiInfoSection from "@/components/UiInfoSection";
 import BtnShare from "@/components/BtnShare";
 import MediaList from "@/components/MediaList";
 import {CAR_EMPTY} from "@/constants";
+import UiTextList from "@/components/UiTextList";
 
 export default function CarPage({ params }) {
   const [car, setCar] = useState(CAR_EMPTY);
@@ -19,6 +20,7 @@ export default function CarPage({ params }) {
         console.error(error);
       })
   }, [])
+  if (!car.id) return null;
   return (
     <main className="min-h-screen">
       <PageHeader>
@@ -57,47 +59,76 @@ export default function CarPage({ params }) {
           </div>
         </div>
         <div>
-          <UiInfoSection title="Огляд зовні">
-            <MediaList mediaPaths={[...car.imgBody, ...car.imgBodyInner]} />
-            <p>Помилки по OBD2 {car.obd}.</p>
+          <p className="text-gray-500 text-sm mb-5">Збільшити зображеня можно зумом як в галереї</p>
+          <UiInfoSection title="Огляд зовні" >
             <p>
-              Салон на {car.salonResult} з 5{car.innerSmell ?? car.innerSmell !== 'Норм' ? `, має запах ${car.innerSmell}` : ''}.
+              Салон на {car.salonResult} з 5{car.innerSmell !== 'норм' ? `, має запах ${car.innerSmell}` : ''}.
               {car.bodyInnerNotes && `${car.bodyInnerNotes}.`} Кондиціонер {car.climat}.
             </p>
+            <MediaList mediaPaths={[...car.imgBody, ...car.imgBodyInner]} />
           </UiInfoSection>
           <UiInfoSection title="Огляд знизу">
             <p>Рама {car.chassis}. {car.bodyNotes}</p>
             <MediaList mediaPaths={car.imgBodyStrong} />
-
+          </UiInfoSection>
+          <UiInfoSection>
             <p>
-              Передній міст {car.fullFront}, задній міст {car.fullRear}, роздатка {car.fullCenter}, коробка {car.kpp}.
-              Тормозні диски передні {car.breakFront} та задні {car.breakRear}.
+              <UiTextList
+                textObject={{
+                  [`Передній міст ${car.fullFront}`]: car.fullFront,
+                  [`задній міст ${car.fullRear}`]: car.fullRear,
+                  [`роздатка ${car.fullCenter}`]: car.fullCenter,
+                  [`коробка ${car.kpp}`]: car.kpp,
+                }}
+                textAfter=". "
+              />
+              Тормозні диски передні {car.breakFront} та задні {car.breakRear}, {car.bodyTechnicNotes}.
             </p>
-            <p>{car.bodyTechnicNotes}</p>
             <MediaList mediaPaths={[...car.imgBodyGear, ...car.imgBodyShrus]} />
-
+          </UiInfoSection>
+          <UiInfoSection>
             <p>Рейка {car.gyr}, при поворотах руля {car.noiseGyr}.</p>
             <MediaList mediaPaths={car.imgBodyGyr} />
           </UiInfoSection>
           <UiInfoSection title="Двигун">
             <p>
-              Двигун під час запуску {car.startTemp} {car.noiseEngine && `, ${car.noiseEngine}`} {car.engineStartNotes && `, ${car.engineStartNotes}`}. Старт на гарячу в порівнянні з першим: {car.secondStart}. {car.engineHotNotes && `${car.engineHotNotes}.`}
+              Двигун під час запуску
+              <UiTextList
+                textObject={{
+                  [car.startTemp]: car.startTemp,
+                  [car.noiseEngine]: car.noiseEngine,
+                  [car.engineStartNotes]: car.engineStartNotes,
+                }}
+                textAfter="."
+              />
+              Старт на гарячу в порівнянні з першим: {car.secondStart}.
+              <UiTextList
+                textObject={{
+                  [car.engineHotNotes]: car.engineHotNotes,
+                }}
+                textAfter="."
+              />
             </p>
+            <p>Емульсія на кришці заливної горловини {car.emulsion}, та {car.bubblesInCool} бульбашок в розширювальному бачку на гарячу, привід ГРМ {car.grm}</p>
+            <p>Помилки по OBD2 {car.obd}.</p>
             <MediaList mediaPaths={[...car.imgFirstStart, ...car.imgSmokeEngine]} />
-            <p>Емульсія на кришці заливної горловини {car.emulsion}, та {car.bubblesInCool} бульбашоки в розширювальному бачку на гарячу, привід ГРМ {car.grm}</p>
-
+          </UiInfoSection>
+          <UiInfoSection>
             <p>Tурбіна {car.turbo}, {car.oilSmell} запах горілого масла при зупинці після покатушек </p>
             <MediaList mediaPaths={car.imgTurbo} />
-
+          </UiInfoSection>
+          <UiInfoSection>
             <p>Паливна {car.fuelSystem}</p>
             <MediaList mediaPaths={car.imgFuelSystem} />
-
+          </UiInfoSection>
+          <UiInfoSection>
             <p>Pадіатор {car.radiator}</p>
             <MediaList mediaPaths={car.imgRadiator} />
-
-            {car.guessEngine.length || !!car.imgGuessEngine.length && (
+          </UiInfoSection>
+          <UiInfoSection>
+            {(car.guessEngine.length || !!car.imgGuessEngine.length) && (
               <>
-                <p>Напевно тече з {car.guessEngine}</p>
+                <p>Напевно {car.guessEngine}</p>
                 <MediaList mediaPaths={car.imgGuessEngine} />
               </>
             )}
@@ -110,7 +141,15 @@ export default function CarPage({ params }) {
               <p>
                 Коробка {car.isMkppError
                 ? (
-                  <span>{car.isErrorMkppSelector && "має роздовбану кулісу, "}{car.isErrorMkppSynkro && "погано включаються передачі, "}{car.isErrorMkppKnocksOut && "вибиває, "}{car.isErrorMkppVibration && "має вібрацію"}.</span>
+                  <UiTextList
+                    textObject={{
+                      "має роздовбану кулісу": car.isErrorMkppSelector,
+                      "погано включаються передачі": car.isErrorMkppSynkro,
+                      "вибиває": car.isErrorMkppKnocksOut,
+                      "має вібрацію": car.isErrorMkppVibration,
+                    }}
+                    textAfter="."
+                  />
                 )
                 : 'без зауважень.'}
               </p>
@@ -119,7 +158,14 @@ export default function CarPage({ params }) {
               <p>
                 Коробка {car.isAkppError
                 ? (
-                  <span>{car.isErrorAkppSelector && "має поштовхи при перемиканні селектору, "}{car.isErrorAkppSynkro && "має поштовхи при зміні передач, "}{car.isErrorAkppVibration && "має вібрацію в D"}.</span>
+                  <UiTextList
+                    textObject={{
+                      "має поштовхи при перемиканні селектору": car.isErrorAkppSelector,
+                      "має поштовхи при зміні передач": car.isErrorAkppSynkro,
+                      "має вібрацію в D": car.isErrorAkppVibration,
+                    }}
+                    textAfter="."
+                  />
                 )
                 : 'без зауважень'}
               </p>
