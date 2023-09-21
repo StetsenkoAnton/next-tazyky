@@ -14,7 +14,7 @@ export async function getDbCollection(name) {
 export async function getDbData(collection, id) {
   let docRef = doc(db, collection, id);
   const docSnap = await getDoc(docRef);
-  return docSnap.data()
+  return docSnap.data();
 }
 
 export async function setDbData(collection, id, data) {

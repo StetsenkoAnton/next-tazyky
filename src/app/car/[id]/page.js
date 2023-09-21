@@ -1,26 +1,15 @@
-"use client"
-
-import { useEffect, useState } from "react";
 import { getDbData } from "@/firebase/db";
 import PageHeader from "@/components/PageHeader";
 import UiInfoSection from "@/components/UiInfoSection";
 import BtnShare from "@/components/BtnShare";
 import MediaList from "@/components/MediaList";
-import {CAR_EMPTY} from "@/constants";
+import { CAR_EMPTY } from "@/constants";
 import UiTextList from "@/components/UiTextList";
 
-export default function CarPage({ params }) {
-  const [car, setCar] = useState(CAR_EMPTY);
-  useEffect(() => {
-    getDbData("cars", params.id)
-      .then((car) => {
-        setCar({...CAR_EMPTY, ...car});
-      })
-      .catch((error) => {
-        console.error(error);
-      })
-  }, [])
-  if (!car.id) return null;
+export default async function CarPage({ params }) {
+  const id = params.id;
+  const carData = await getDbData("cars", id);
+  const car = { ...CAR_EMPTY, ...carData };
   return (
     <main className="min-h-screen">
       <PageHeader>
@@ -62,7 +51,11 @@ export default function CarPage({ params }) {
           <p className="text-gray-500 text-sm mb-5">Збільшити зображеня можно зумом як в галереї</p>
           <UiInfoSection title="Огляд зовні" >
             <p>
-              Салон на {car.salonResult} з 5{car.innerSmell !== 'норм' ? `, має запах ${car.innerSmell}` : ''}.
+              Салон на {car.salonResult} з 5{
+                car.innerSmell !== 'норм'
+                  ? `, має запах ${car.innerSmell}, є ймовірність шо топлена'`
+                  : ''
+              }.
               {car.bodyInnerNotes && `${car.bodyInnerNotes}.`} Кондиціонер {car.climat}.
             </p>
             <MediaList mediaPaths={[...car.imgBody, ...car.imgBodyInner]} />

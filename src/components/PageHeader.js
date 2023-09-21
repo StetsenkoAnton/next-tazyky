@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from 'next/image'
+import shareImg from "@/assets/logo-transparent-240.png";
 
 export default function PageHeader({ children }) {
   return (
@@ -12,7 +13,7 @@ export default function PageHeader({ children }) {
           <div className="flex items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex flex-shrink-0 items-center text-white">
               <Link href="/">
-                <strong>ТАЗИКИ</strong>
+                <Image src={shareImg} alt="img" width={50} height={50} />
               </Link>
             </div>
           </div>
