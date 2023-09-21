@@ -1,26 +1,13 @@
-"use client"
-import { useEffect, useState } from "react";
 import { getDbCollection } from "@/firebase/db";
 import PageHeader from "@/components/PageHeader";
 import ViewedCar from "@/components/ViewedCar";
 import Link from "next/link";
 
-
-export default function Home() {
-  const [carList, setCarList] = useState([]);
-  useEffect(() => {
-    getDbCollection("cars")
-      .then((cars) => {
-        console.log(cars);
-        setCarList(cars);
-      })
-      .catch((error) => {
-        console.error(error);
-      })
-  }, [])
+export default async function Home() {
+  const carList = await getDbCollection("cars");
   return (
     <main className="min-h-screen">
-      <PageHeader>
+      <PageHeader >
         <Link className="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" href="/create">Почати огляд</Link>
       </PageHeader>
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
