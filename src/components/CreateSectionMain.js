@@ -45,7 +45,7 @@ export default function CreateSectionMain({ car, updateCarKey }) {
       <UiInfoRow3>
         {[
           <UiInput label="рік" type="number" value={car.year} onInput={(e) => updateCarKey("year", e)} key={4} />,
-          <UiInput label="пробіг, т." type="number" value={car.mileage} onInput={(e) => updateCarKey("mileage", e)} key={5} />,
+          <UiInput label="пробіг, тис." type="number" value={car.mileage} onInput={(e) => updateCarKey("mileage", e)} key={5} />,
           <UiInput label="обьем" type="number" value={car.engineVolume} onInput={(e) => updateCarKey("engineVolume", e)} key={6} />,
         ]}
       </UiInfoRow3>

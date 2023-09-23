@@ -59,7 +59,7 @@ export default function UiMedia({
                 required={required}
                 type="file"
                 capture="camera"
-                accept="image/*"
+                accept="image/jpeg"
                 onChange={handleLoad}
                 className="hidden"
               />
@@ -82,7 +82,7 @@ export default function UiMedia({
               <input
                 required={required}
                 type="file"
-                accept={`${noImage ? 'video/*' : 'image/*,video/*'}`}
+                accept={`${noImage ? 'video/*' : 'image/jpeg,video/*'}`}
                 multiple
                 onChange={handleLoad}
                 className="hidden"
