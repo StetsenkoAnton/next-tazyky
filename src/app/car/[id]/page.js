@@ -5,14 +5,27 @@ import BtnShare from "@/components/BtnShare";
 import MediaList from "@/components/MediaList";
 import { CAR_EMPTY } from "@/constants";
 import UiTextList from "@/components/UiTextList";
+import Link from "next/link";
 
 export default async function CarPage({ params }) {
   const id = params.id;
   const carData = await getDbData("cars", id);
   const car = { ...CAR_EMPTY, ...carData };
+  const bodyImgList = [...car.imgBody, ...car.imgBodyInner];
+  bodyImgList[0].fetchpriority = "high";
+  bodyImgList[0].lazy = false;
   return (
     <main className="min-h-screen">
-      <PageHeader>
+      <PageHeader
+        leftSide={(
+          <Link
+            className="inline-flex gap-2 items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            href="/"
+          >
+            Назад
+          </Link>
+        )}
+      >
         <BtnShare title={`Звіт ${car.name}`} />
       </PageHeader>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -58,7 +71,7 @@ export default async function CarPage({ params }) {
               }.
               {car.bodyInnerNotes && `${car.bodyInnerNotes}.`} Кондиціонер {car.climat}.
             </p>
-            <MediaList mediaPaths={[...car.imgBody, ...car.imgBodyInner]} />
+            <MediaList mediaPaths={bodyImgList} />
           </UiInfoSection>
           <UiInfoSection title="Огляд знизу">
             <p>Рама {car.chassis}. {car.bodyNotes}</p>

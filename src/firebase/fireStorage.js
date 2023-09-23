@@ -1,4 +1,4 @@
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 import firebase_app from "./config";
 
 const storage = getStorage(firebase_app);
@@ -31,9 +31,14 @@ export function uploadMedia(carId, fileName, file) {
           resolve({
             path: downloadURL,
             type,
+            name: fileName,
           });
         });
       }
     );
   })
+}
+export function deleteMedia(carId, fileName) {
+  const desertRef = ref(storage, `${carId}/${fileName}`);
+  return deleteObject(desertRef);
 }

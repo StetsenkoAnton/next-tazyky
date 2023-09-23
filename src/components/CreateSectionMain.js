@@ -35,7 +35,7 @@ export default function CreateSectionMain({ car, updateCarKey }) {
             type="number"
             value={car.priceNum}
             onInput={(e) => updateCarKey("priceNum", e)}
-            afterSelect={['€', 'pln', 'грн', '$']}
+            afterSelect={['pln', '€', 'грн', '$']}
             valueSelect={car.priceCurrency}
             onSelect={(e) => updateCarKey("priceCurrency", e)}
             key={3}

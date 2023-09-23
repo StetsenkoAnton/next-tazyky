@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { setDbData } from "@/firebase/db";
 import { getRtDbData, updateRtDbData } from "@/firebase/rtDb";
 import { getUiCarData } from "@/services/getUiCarData";
@@ -21,7 +21,6 @@ import BtnShare from "@/components/BtnShare";
 
 export default function CreatePage({ params }) {
   const router = useRouter();
-  // const params = useParams();
   const carId = params.id;
   const [car, setCar] = useState(CAR_EMPTY);
 
@@ -36,10 +35,10 @@ export default function CreatePage({ params }) {
   }, []);
 
   function updateCarKey(key, value) {
-    const cloneCar = {...car};
-    if (!car.id) cloneCar.id = params.id;
-    cloneCar[key] = value;
-    updateRtDbData(carId, cloneCar).then();
+    if (!car.id) {
+      updateRtDbData(`${carId}/id`, carId).then();
+    }
+    updateRtDbData(`${carId}/${key}`, value).then();
   }
 
   function deleteRTData() {

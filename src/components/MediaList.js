@@ -1,6 +1,5 @@
 'use client'
 
-import Image from "next/image";
 import video from "@/assets/film.svg";
 
 export default function MediaList({
@@ -11,7 +10,14 @@ export default function MediaList({
       {mediaPaths.map((fileName) => (
         <li key={fileName.path}>
           {fileName.type === "image"
-            ? <img className="w-full mb-1" src={fileName.path} alt="img" loading="lazy"/>
+            ? (
+              <img
+                className="w-full mb-1"
+                src={fileName.path}
+                alt="img"
+                loading={fileName?.lazy ?? "lazy"}
+                fetchPriority={fileName.fetchpriority}
+              />)
             : (
               <video className="w-full mb-1" src={fileName.path} controls>
                 <source src={fileName.path} type={fileName.type} />

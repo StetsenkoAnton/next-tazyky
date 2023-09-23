@@ -5,6 +5,7 @@ import Link from "next/link";
 
 export default async function Home() {
   const carList = await getDbCollection("cars");
+  carList.reverse();
   return (
     <main className="min-h-screen">
       <PageHeader >
@@ -12,7 +13,7 @@ export default async function Home() {
       </PageHeader>
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <h2 className="text-2xl font-bold tracking-tight text-gray-900">Оглянуті автівки</h2>
-        <ul className="mt-6 grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4 lg:grid-cols-6 xl:gap-x-8">
+        <ul className="mt-6 gap-x-6 gap-y-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
           {carList.map(car => (
             <li
               className="group relative"

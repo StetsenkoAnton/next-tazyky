@@ -1,7 +1,7 @@
 'use client'
 import { useState } from "react";
 
-import { uploadMedia } from "@/firebase/fireStorage";
+import { deleteMedia, uploadMedia } from "@/firebase/fireStorage";
 import Image from "next/image";
 import img from "@/assets/image.svg"
 import video from "@/assets/film.svg"
@@ -24,7 +24,8 @@ export default function UiMedia({
     setIsLoad(true);
     for (let i = 0; i < e.target.files.length; i++) {
       const file = e.target.files[i];
-      uploadList.push(uploadMedia(carId, file.name, file));
+      const isIncludeFile = value.map((media) => media.name).includes(file.name);
+      if (!isIncludeFile) uploadList.push(uploadMedia(carId, file.name, file));
     }
     Promise.all(uploadList)
       .then((pathArr) => {
@@ -32,6 +33,13 @@ export default function UiMedia({
       })
       .finally(() => {
         setIsLoad(false);
+      })
+  }
+  function onDeleteMedia(fileInfo) {
+    deleteMedia(carId, fileInfo.name)
+      .then(() => {
+        const newList = value.filter((media) => media.name !== fileInfo.name);
+        onInput(newList);
       })
   }
   return (
@@ -84,11 +92,18 @@ export default function UiMedia({
         )}
       <ul className="flex gap-2 pt-2">
         {value.map((fileName) => (
-          <li key={fileName.path}>
+          <li className="relative" key={fileName.path}>
             {fileName.type === "image"
               ? <Image src={fileName.path} alt="img" width={80} height={60} quality={20}/>
               : <video src={fileName.path} width={80} height={60} />
             }
+            <button
+              className="absolute top-0 right-0 bg-black text-white rounded-full px-2"
+              type="button"
+              onClick={() => onDeleteMedia(fileName)}
+            >
+              X
+            </button>
           </li>
         ))}
       </ul>
